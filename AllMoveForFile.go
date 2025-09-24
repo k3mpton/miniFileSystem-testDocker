@@ -51,25 +51,10 @@ func main() {
 			fmt.Println("$ App Stopped...")
 			return
 		default:
-			fmt.Printf("\n\nWARNING: Write num from menu")
+			fmt.Printf("\n\n! WARNING: Write num from menu")
 		}
 
 	}
-	// создание файла
-	// CreateFile()
-	// CreateFile2()
-
-	// запись в файл
-	// WriteFile()
-
-	// SearchLineInFile()
-
-	// // задание: Найти в файле .go каждую функцию и посчитать сколько строк состоит;
-	// CountRowsInFuncAndFor()
-
-	// // задание: Найти в файле .go каждую функцию и посчитать сколько строк состоит; чуть оптимизированная
-	// CountFunctionLinesBalanced()
-
 }
 
 var lastFileCreatedName string
@@ -84,7 +69,7 @@ func AccessingUser(msg string) bool {
 
 func DeleteFile(pathFile string) {
 	if err := os.Remove(pathFile); err != nil {
-		fmt.Println("Fail delete fail", err)
+		fmt.Println("! Fail delete fail", err)
 		return
 	}
 	nameFail := filepath.Base(pathFile)
@@ -116,7 +101,7 @@ func CreateFile(name string) {
 			fmt.Println("Operation cancelled")
 			return
 		}
-		fallthrough // test fallthrough
+		fallthrough
 	default:
 		file, err := os.Create(name)
 		if err != nil {
@@ -131,35 +116,6 @@ func CreateFile(name string) {
 		fmt.Println("Access! File is Created! NameFile:", name)
 	}
 }
-
-// func CreateFile(name string) {
-// 	if f, err := os.Stat(name); err == nil {
-// 		fmt.Println("WARNING: File is exists")
-// 		fmt.Printf("%.2f KB\n", float64(f.Size()/BytesInKb))
-// 		if AccessingUser("We propose to create a new dir for this file") {
-// 			nameDir := bufio.NewScanner(os.Stdin)
-// 			fmt.Printf("$ Name dir: ")
-// 			nameDir.Scan()
-
-// 			if err := os.Mkdir(nameDir.Text(), 0755); err != nil {
-// 				fmt.Println("Fail created dir", err)
-// 				return
-// 			}
-// 			f, _ := os.Create(nameDir.Text() + "\\" + name)
-// 			lastFileCreatedName = nameDir.Text() + "\\" + name
-// 			defer f.Close()
-// 		}
-// 		return
-// 	}
-
-// 	file, err := os.Create(name)
-// 	if err != nil {
-// 		log.Fatalf("Ошибка: %v", err)
-// 	}
-// 	defer file.Close()
-// 	lastFileCreatedName = filepath.Base(name)
-// 	fmt.Println("Access! File is Created! NameFile: ", name)
-// }
 
 func WriteFile(nameFile string) {
 	file, err := os.OpenFile(nameFile, os.O_APPEND|os.O_WRONLY, 0644)
@@ -178,124 +134,3 @@ func WriteFile(nameFile string) {
 
 	w.Flush()
 }
-
-// func CreateFile2() {
-// 	err := os.WriteFile("C:/Users/rikos/OneDrive/Документы/dockerTrena/renatos.txt", []byte("reant"), 0644)
-// 	if err != nil {
-// 		log.Fatalf("Ошибка: %v", err)
-// 	}
-// }
-
-// Поиск определенной строки в файле
-// func SearchLineInFile() {
-// 	file, err := os.Open("renatos.txt")
-// 	if err != nil {
-// 		log.Fatalf("Ошибка: %v", err)
-// 	}
-// 	defer file.Close()
-
-// 	scn := bufio.NewScanner(file)
-// 	linNum := 1
-
-// 	for scn.Scan() {
-// 		line := scn.Text()
-// 		if strings.Contains(line, "мир") {
-// 			fmt.Printf("%v: %v", linNum, line)
-// 			break
-// 		}
-// 		linNum++
-// 	}
-// }
-
-// задание: Найти в файле .go каждую функцию и посчитать сколько строк состоит;
-// func CountRowsInFuncAndFor() {
-// 	file, err := os.Open("../test/test.go")
-// 	if err != nil {
-// 		log.Fatalln("Ошибка: ", err)
-// 	}
-// 	defer file.Close()
-
-// 	countRowFunc := 1
-// 	// countRowFor := 1
-
-// 	scn := bufio.NewScanner(file)
-
-// 	stack := []rune{}
-
-// 	flag := false
-// 	for scn.Scan() {
-// 		line := scn.Text()
-// 		if strings.HasPrefix(line, "func ") && strings.Contains(line, "{") {
-// 			flag = true
-// 		}
-// 		fmt.Println(line)
-
-// 		brackets := 1
-// 		if strings.Contains(line, "{") {
-// 			stack = append(stack, '{')
-// 			brackets++
-// 		} else if strings.Contains(line, "}") {
-// 			brackets--
-// 			stack = stack[:len(stack)-1]
-// 			if len(stack) == 0 {
-// 				flag = false
-// 				fmt.Println("Строк в этой функции: ", countRowFunc, brackets)
-// 				countRowFunc = 0
-// 			}
-// 		}
-
-// 		if flag {
-// 			countRowFunc++
-// 		}
-// 	}
-
-// 	fmt.Println(countRowFunc)
-// }
-
-// // задание: Найти в файле .go каждую функцию и посчитать сколько строк состоит; чуть оптимизированная версия
-// func CountFunctionLinesBalanced(filename string) {
-// 	file, err := os.Open(filename)
-// 	if err != nil {
-// 		log.Fatalf("Ошибка: %v", err)
-// 	}
-// 	defer file.Close()
-
-// 	scanner := bufio.NewScanner(file)
-// 	braceCount := 0
-// 	inFunction := false
-// 	lineCount := 0
-// 	currentLine := 0
-
-// 	for scanner.Scan() {
-// 		currentLine++
-// 		line := scanner.Text()
-
-// 		// Читабельно: понятная проверка начала функции
-// 		if !inFunction && strings.HasPrefix(line, "func ") && strings.Contains(line, "{") {
-// 			inFunction = true
-// 			braceCount = 1
-// 			lineCount = 1
-// 			continue
-// 		}
-
-// 		// Производительно: один проход по строке для подсчета скобок
-// 		if inFunction {
-// 			for _, char := range line {
-// 				if char == '{' {
-// 					braceCount++
-// 				} else if char == '}' {
-// 					braceCount--
-// 					if braceCount == 0 {
-// 						fmt.Printf("Строка %d: функция содержит %d строк\n", currentLine, lineCount)
-// 						inFunction = false
-// 					}
-// 				}
-// 			}
-// 			lineCount++
-// 		}
-// 	}
-
-// 	if inFunction {
-// 		fmt.Printf("Функция не закрыта: %d строк\n", lineCount)
-// 	}
-// }
