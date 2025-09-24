@@ -76,10 +76,10 @@ var lastFileCreatedName string
 
 func AccessingUser(msg string) bool {
 	scn := bufio.NewScanner(os.Stdin)
-	fmt.Printf("$ %v (ignoring = n)? y/n: ", msg)
+	fmt.Printf("$ %v ( ignoring = n )? y/n: ", msg)
 	scn.Scan()
 
-	return strings.ToLower(scn.Text()) == "y"
+	return strings.ToLower(strings.TrimSpace(scn.Text())) == "y"
 }
 
 func DeleteFile(pathFile string) {
@@ -164,13 +164,13 @@ func CreateFile(name string) {
 func WriteFile(nameFile string) {
 	file, err := os.OpenFile(nameFile, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Fatalf("Не удалость открыть файл: %v", err)
+		log.Fatalf("! Fail open fail: %v", err)
 	}
 	defer file.Close()
 
 	w := bufio.NewWriter(file)
 
-	fmt.Printf("Введите данные для записи в файл: ")
+	fmt.Printf("$ Write data in fail: ")
 	scn := bufio.NewScanner(os.Stdin)
 	scn.Scan()
 
